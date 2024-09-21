@@ -1,7 +1,8 @@
+# MERN E-Commerce Project
+
 ![Alt text](https://res.cloudinary.com/ddnuizxcz/image/upload/v1726937017/Screenshot_2024-09-21_220926_npqhrs.png)
 
 
-# MERN E-Commerce Project
 
 This is a full-stack E-Commerce application built using the MERN stack (MongoDB, Express.js, React.js, and Node.js). It supports various features like user authentication, product management, shopping cart functionality, and payment integration using Stripe.
 Table of Contents
