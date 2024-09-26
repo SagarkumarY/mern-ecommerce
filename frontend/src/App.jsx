@@ -1,12 +1,12 @@
 import { Navigate, Route, Routes } from "react-router-dom";
-import { HomePage, SignupPage, LoginPage, AdminPage, CartPage, PurchaseSuccessPage, PurchaseCancelPage } from "./pages";
+import { HomePage, SignupPage, LoginPage, AdminPage, CartPage, PurchaseSuccessPage, PurchaseCancelPage, CategoryPage } from "./pages";
 import Navbar from "./components/Navbar";
 import { Toaster } from "react-hot-toast";
 import useUserStore from "./store/useUserStore";
 import { useEffect } from "react";
 import LoadingSpinner from "./components/LoadingSpinner";
-import CategoryPage from "./pages/Categorypage";
 import useCartStore from "./store/useCartStore";
+
 
 
 function App() {

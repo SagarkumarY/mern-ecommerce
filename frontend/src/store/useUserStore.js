@@ -124,7 +124,8 @@ const useUserStore = create((set, get) => ({
             return res.data;  // Return the response from the server
         } catch (error) {
             set({ user: null, checkingAuth: false });  // If an error occurs, log the user out
-            throw error;  // Propagate the error for further handling
+             throw error;  // Propagate the error for further handling
+            // console.log(error)
         }
     },
 
@@ -135,39 +136,39 @@ const useUserStore = create((set, get) => ({
 // TODO: Implement the axios interceptor for refreshing access token
 
 // Axios interceptor for refreshing access token
-let refreshPromise = null;
-axios.interceptors.response.use(
-    (response) => response,  // If the response is successful, just return it
+// let refreshPromise = null;
+// axios.interceptors.response.use(
+//     (response) => response,  // If the response is successful, just return it
 
-    async (error) => {
-        const originalRequest = error.config;  // Save the original request
-        if (error.response?.status === 401 && !originalRequest._retry) {
-            originalRequest._retry = true;  // Mark this request so it doesn't retry infinitely
+//     async (error) => {
+//         const originalRequest = error.config;  // Save the original request
+//         if (error.response?.status === 401 && !originalRequest._retry) {
+//             originalRequest._retry = true;  // Mark this request so it doesn't retry infinitely
 
-            try {
-                // If a refresh is already in progress, wait for it to complete
-                if (refreshPromise) {
-                    await refreshPromise;
-                    return axios(originalRequest);  // Retry the original request
-                }
+//             try {
+//                 // If a refresh is already in progress, wait for it to complete
+//                 if (refreshPromise) {
+//                     await refreshPromise;
+//                     return axios(originalRequest);  // Retry the original request
+//                 }
 
-                // Start a new refresh process
-                refreshPromise = useUserStore.getState().refreshToken();  // Call the refreshToken method
-                await refreshPromise;  // Wait for the refresh token request to complete
-                refreshPromise = null;  // Reset the promise after it's done
+//                 // Start a new refresh process
+//                 refreshPromise = useUserStore.getState().refreshToken();  // Call the refreshToken method
+//                 await refreshPromise;  // Wait for the refresh token request to complete
+//                 refreshPromise = null;  // Reset the promise after it's done
 
-                // Retry the original request with the new access token
-                return axios(originalRequest);
-            } catch (error) {
-                // If refresh fails, log the user out and reject the request
-                useUserStore.getState().logout();
-                return Promise.reject(error);
-            }
-        }
+//                 // Retry the original request with the new access token
+//                 return axios(originalRequest);
+//             } catch (error) {
+//                 // If refresh fails, log the user out and reject the request
+//                 useUserStore.getState().logout();
+//                 return Promise.reject(error);
+//             }
+//         }
 
-        return Promise.reject(error);  // If the error isn't 401 or refresh fails, reject the error
-    }
-);
+//         return Promise.reject(error);  // If the error isn't 401 or refresh fails, reject the error
+//     }
+// );
 
 
 
