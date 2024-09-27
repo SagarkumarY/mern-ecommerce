@@ -4,25 +4,37 @@ import { Link } from "react-router-dom";
 import useCartStore from "../store/useCartStore";
 import axios from "../lib/axios";
 import Confetti from "react-confetti";
+import useUserStore from "../store/useUserStore";
+import useInvoiceStore from "../store/useInvoiceStore";
 
 const PurchaseSuccessPage = () => {
   const [isProcessing, setIsProcessing] = useState(true);
-  const { clearCart ,cart} = useCartStore();
+  const { clearCart, cart } = useCartStore();
+
+  const { user } = useUserStore();
+
   const [error, setError] = useState(null);
-  console.log("ClarKart" , clearCart)
+  // Get the invoice-related actions and state from the store
+  const {
+    sendInvoice,
+    invoiceStatus,
+    resetInvoiceStatus,
+    error: invoiceErro,
+  } = useInvoiceStore();
 
   useEffect(() => {
     const handleCheckoutSuccess = async (sessionId) => {
-
       try {
-      let res =   await axios.post("/payments/checkout-success", {
+        let res = await axios.post("/payments/checkout-success", {
           sessionId,
         });
-        if (cart.length > 0) { // Call clearCart only if there are items in the cart
+        if (cart.length > 0) {
+          // call invoice function to send user email 
+          await sendInvoice(user.name, user.email, cart);
+          // Call clearCart only if there are items in the cart
           clearCart();
         }
 
-        console.log("Cart" , cart)
       } catch (error) {
         console.log(error);
       } finally {
@@ -39,22 +51,24 @@ const PurchaseSuccessPage = () => {
       setIsProcessing(false);
       setError("No session ID found in the URL");
     }
-  }, [clearCart, JSON.stringify(cart)]);
+  }, [clearCart, JSON.stringify(cart), sendInvoice, resetInvoiceStatus, user]);
 
   if (isProcessing) return "Processing...";
 
   if (error) return `Error: ${error}`;
 
+
+
   return (
     <div className="h-screen flex items-center justify-center px-4">
       <Confetti
-				width={window.innerWidth}
-				height={window.innerHeight}
-				gravity={0.1}
-				style={{ zIndex: 99 }}
-				numberOfPieces={700}
-				recycle={false}
-			/>
+        width={window.innerWidth}
+        height={window.innerHeight}
+        gravity={0.1}
+        style={{ zIndex: 99 }}
+        numberOfPieces={700}
+        recycle={false}
+      />
 
       <div className="max-w-md w-full bg-gray-800 rounded-lg shadow-xl overflow-hidden relative z-10">
         <div className="p-6 sm:p-8">
@@ -68,9 +82,19 @@ const PurchaseSuccessPage = () => {
           <p className="text-gray-300 text-center mb-2">
             Thank you for your order. {"We're"} processing it now.
           </p>
-          <p className="text-emerald-400 text-center text-sm mb-6">
-            Check your email for order details and updates.
-          </p>
+          {invoiceStatus === "success" ? (
+            <p className="text-emerald-400 text-center text-sm mb-6">
+              Check your email for the invoice and order details.
+            </p>
+          ) : invoiceStatus === "error" ? (
+            <p className="text-red-400 text-center text-sm mb-6">
+              Failed to send the invoice. Please contact support.
+            </p>
+          ) : (
+            <p className="text-emerald-400 text-center text-sm mb-6">
+              Your invoice is being generated.
+            </p>
+          )}
           <div className="bg-gray-700 rounded-lg p-4 mb-6">
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm text-gray-400">Order number</span>

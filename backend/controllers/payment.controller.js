@@ -102,9 +102,6 @@ export const createCheckoutSession = async (req, res) => {
     }
 };
 
-
-
-
 // Export the checkoutSuccess function to handle Stripe checkout success
 export const checkoutSuccess = async (req, res) => {
 	try {
@@ -180,12 +177,6 @@ export const checkoutSuccess = async (req, res) => {
 	}
 };
 
-
-
-
-
-
-
 // Helper function to create a Stripe coupon
 async function createStripeCoupon(discountPercentage) {
     try {
@@ -203,10 +194,6 @@ async function createStripeCoupon(discountPercentage) {
         throw new Error("Error creating Stripe coupon");
     }
 };
-
-
-
-
 
 // Helper function to create a new coupon in the database
 async function createNewCoupon(userId) {
@@ -229,3 +216,7 @@ async function createNewCoupon(userId) {
         throw new Error("Error creating new coupon");
     }
 }
+
+
+
+

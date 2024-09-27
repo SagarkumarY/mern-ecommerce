@@ -4,8 +4,7 @@
 
 
 
-This is a full-stack E-Commerce application built using the MERN stack (MongoDB, Express.js, React.js, and Node.js). It supports various features like user authentication, product management, shopping cart functionality, and payment integration using Stripe.
-Table of Contents
+This full-stack E-Commerce application, built with the MERN stack (MongoDB, Express.js, React.js, and Node.js), offers features like user authentication, product management, shopping cart functionality, and Stripe payment integration. It also includes automated email notifications and PDF invoice generation for order confirmations, ensuring a smooth and professional user experience.
 
  1. Features
  2. Technologies
@@ -14,8 +13,9 @@ Table of Contents
  5. Backend Setup
  6. Frontend Setup
  7. Environment Variables
- 8. Running the Application
- 9. License
+ 8. Invoice Generation & Email Notifications
+ 9. Running the Application
+ 10. License
 
 
 
@@ -24,12 +24,20 @@ Table of Contents
  The application includes the following features:
 
     User Authentication: Users can sign up, log in, and manage their profiles.
+
     Product Management: Admins can add, edit, and delete products.
+
     Shopping Cart: Users can add products to their cart and proceed to checkout.
+
     Payment Integration: Secure payments are handled via Stripe.
+
     Order Management: Users can view their order history.
+
     Responsive Design: The application is optimized for both desktop and mobile devices.
 
+    Invoice Generation: Automatic PDF invoices are generated after successful orders.
+
+    Email Notifications: Email confirmations are sent to users after placing orders.
 
 
 
@@ -44,6 +52,8 @@ Backend:
     JWT (JSON Web Tokens): For user authentication.
     Bcrypt: Password hashing for user security.
     Stripe: Payment gateway integration.
+    Nodemailer: For sending order confirmation emails.
+    PDFKit: For generating PDF invoices.
 
 Frontend:
 
@@ -93,6 +103,8 @@ cd backend
     CLOUDINARY_API_KEY=your_cloudinary_api_key
     CLOUDINARY_API_SECRET=your_cloudinary_api_secret
     STRIPE_SECRET_KEY=your_stripe_secret_key
+    EMAIL_USER=your_email_service_user
+    EMAIL_PASS=your_email_service_password
 
 
 ### 4.Start the backend server:
